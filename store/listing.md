@@ -16,7 +16,7 @@ Texts to paste into the Chrome Web Store Developer Dashboard.
 | Icon | `extension/icons/icon-128.png` (from the zip) |
 | Small promo tile (440×280) | `store/promo-tile-440x280.png` |
 | Marquee promo tile (1400×560) | `store/marquee-1400x560.png` |
-| Screenshots | 1280×800 PNG/JPEG, 1–5 pieces. **To do**: see below |
+| Screenshots | `store/screenshots/*.png` (1280×800), see below |
 
 ## Short description (manifest, max 132 characters)
 
@@ -103,12 +103,15 @@ https://overpass-api.de/*, https://overpass.kumi.systems/* and https://nominatim
 **Data usage:** tick **Location** (climb coordinates are sent to OpenStreetMap services
 to look up names); leave the other categories unticked. Tick all three certifications.
 
-## Screenshots (to do)
+## Screenshots
 
-Make 1280×800 screenshots in a desktop browser window, for example:
+Upload in this order (1280×800 PNG):
 
-1. A course with the ClimbNamer panel, the climbs in orange on the map and the bands on the elevation chart.
-2. A climb clicked in the panel: map zoomed to the climb (orange on the route) and picked out on the chart.
-3. A long or hilly course with many climbs.
+1. `screenshots/1-course-climbs-map-and-chart.png`: a 64 km course with five climbs, in
+   orange on the map with numbered badges and as bands on the elevation chart; climb 1
+   (Ravensberg) selected.
+2. `screenshots/2-course-many-climbs.png`: an 86 km course with seven climbs, named after
+   summits (Scherpenberg, Vidaigneberg, Baneberg, Monteberg, Kraaiberg) and roads.
 
-Tip: pick courses that don't start at your home address.
+Originals are scaled to fit 1280×800; thin dark bands fill the rest, so nothing is
+cropped.

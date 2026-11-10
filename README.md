@@ -13,6 +13,8 @@ where the climbs are or what they're called. ClimbNamer does: *Kemmelberg*, *Rod
 
 Sister project: [ClimbNamer for Hammerhead Dashboard](https://github.com/bertpinoy/ClimbNamer).
 
+![ClimbNamer on a course in Garmin Connect](store/screenshots/1-course-climbs-map-and-chart.png)
+
 ## Features
 
 - **Climbs detected automatically** on every course you open in Garmin Connect, with
