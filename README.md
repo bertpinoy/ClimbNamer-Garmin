@@ -2,12 +2,17 @@
 
 # ClimbNamer — for Garmin Connect
 
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda)
+[![Users](https://img.shields.io/chrome-web-store/users/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda)
 [![License](https://img.shields.io/github/license/bertpinoy/ClimbNamer-Garmin)](https://github.com/bertpinoy/ClimbNamer-Garmin/blob/main/LICENSE)
 
 A Chrome / Edge extension that **finds the climbs on your Garmin Connect courses and gives
 them names**. Garmin Connect shows a course's elevation profile, but doesn't tell you
 where the climbs are or what they're called. ClimbNamer does: *Kemmelberg*, *Rodeberg*,
 *Col du Galibier*…
+
+**[➜ Install ClimbNamer for Garmin Connect from the Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda)**
+(works in Google Chrome and Microsoft Edge)
 
 > **Not affiliated with Garmin.** ClimbNamer is an independent project. It is not
 > endorsed or sponsored by Garmin. Garmin, Garmin Connect and ClimbPro are trademarks of
@@ -90,7 +95,11 @@ See the [privacy policy](PRIVACY.md).
 
 ## Install
 
-**From the Chrome Web Store:** *coming soon*.
+**Chrome:** install from the [Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda) and click **Add to Chrome**.
+Updates are installed automatically.
+
+**Edge:** open the same [Chrome Web Store page](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda) in Edge, click
+**Allow extensions from other stores** when Edge asks, then **Get** / **Add to Chrome**.
 
 **From source** (for development):
 
@@ -127,7 +136,8 @@ fixes in sync.
 
 1. Raise `version` in `extension/manifest.json`.
 2. Run `powershell -File tools/package.ps1`. This creates `dist/ClimbNamer-Garmin-<version>.zip`.
-3. Upload the zip in the Chrome Web Store Developer Dashboard. The listing texts are in
+3. Upload the zip in the Chrome Web Store Developer Dashboard (item `ejokejjhepoeeebomjahihncemjbmfda`,
+   **Package → Upload new package**). The listing texts are in
    [`store/listing.md`](store/listing.md).
 
 If Garmin changes Garmin Connect, the parts most likely to need an update are the API

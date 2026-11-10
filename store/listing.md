@@ -6,7 +6,7 @@ Texts to paste into the Chrome Web Store Developer Dashboard.
 
 | Field | Value |
 |---|---|
-| Chrome Web Store | Not submitted yet |
+| Chrome Web Store | Submitted, in review: https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda (item ID `ejokejjhepoeeebomjahihncemjbmfda`) |
 | Name | ClimbNamer - for Garmin Connect *(from the manifest)* |
 | Category | *Productivity* (or *Tools*) |
 | Language | English |
