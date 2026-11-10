@@ -166,7 +166,7 @@
           pane: BADGE_PANE,
           interactive: false,
           keyboard: false,
-          icon: L.divIcon({ className: 'cn-map-badge' + (active ? ' cn-map-badge-active' : ''), html: String(i + 1), iconSize: active ? [24, 24] : [20, 20] }),
+          icon: L.divIcon({ className: 'cn-map-badge' + (active ? ' cn-map-badge-active' : ''), html: '<span>' + (i + 1) + '</span>', iconSize: active ? [24, 24] : [20, 20] }),
         }));
       }
     }

@@ -109,11 +109,18 @@
 .cn-band-label { fill: #e84a0c; font: 700 11px "Bahnschrift", "Segoe UI", system-ui, sans-serif; }
 .cn-band-label-active, .cn-band-label-hover { fill: #c2410c; }
 
-/* Numbered climb badges on Garmin Connect's map (drawn by inject.js) */
+/* Numbered climb badges on Garmin Connect's map (drawn by inject.js).
+   The number sits in its own span with a fixed line height, so Garmin's marker CSS
+   (which overrides display on .leaflet-marker-icon) can't push it out of the circle. */
 .cn-map-badge {
-  display: grid; place-items: center; box-sizing: border-box;
-  border-radius: 50%; background: #ff6b1a; color: #fff; border: 2px solid #0c1220;
-  font: 700 11px/1 "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  box-sizing: border-box !important;
+  border-radius: 50%; background: #ff6b1a; border: 2px solid #0c1220;
   box-shadow: 0 1px 4px rgba(8, 12, 24, 0.45);
 }
-.cn-map-badge-active { font-size: 13px; border-color: #fff; background: #e84a0c; box-shadow: 0 0 0 2px #0c1220, 0 2px 6px rgba(8, 12, 24, 0.5); }
+.cn-map-badge > span {
+  display: block !important; width: 100%; height: 100%; margin: 0; padding: 0;
+  text-align: center; line-height: 16px; /* 20px badge − 2 × 2px border */
+  color: #fff; font: 700 11px/16px "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+}
+.cn-map-badge-active { border-color: #fff; background: #e84a0c; box-shadow: 0 0 0 2px #0c1220, 0 2px 6px rgba(8, 12, 24, 0.5); }
+.cn-map-badge-active > span { font-size: 13px; line-height: 20px; } /* 24px badge − 2 × 2px border */
