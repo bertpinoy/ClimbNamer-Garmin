@@ -159,6 +159,7 @@
     const id = courseIdFromUrl();
     const next = (id && byCourse.get(id)) || null;
     if (next !== current) {
+      if (activeClimb) showOnMap(null);
       current = next;
       activeClimb = null;
       render();
@@ -233,7 +234,7 @@
     const rows = current.climbs.map((c, i) => {
       const d = displayName(c);
       const osm = `https://www.openstreetmap.org/?mlat=${c.top[0]}&mlon=${c.top[1]}#map=15/${c.top[0]}/${c.top[1]}`;
-      return `<li class="hhcn-row hhcn-${d.source}${c === activeClimb ? ' hhcn-active' : ''}" data-hhcn="open" data-i="${i}" title="Show this climb on the elevation chart">
+      return `<li class="hhcn-row hhcn-${d.source}${c === activeClimb ? ' hhcn-active' : ''}" data-hhcn="open" data-i="${i}" title="Show this climb on the map and the elevation chart">
         <span class="hhcn-num">${i + 1}</span>
         <div class="hhcn-main">
           <div class="hhcn-name-row">
@@ -270,8 +271,22 @@
     activeClimb = activeClimb === c ? null : c;
     renderPanel();
     drawBands();
+    showOnMap(activeClimb);
     const svg = findChart()?.svg;
     if (svg && activeClimb) svg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /**
+   * Asks the page script (inject.js) to zoom Garmin's map to a climb and draw it,
+   * or to remove the highlight when c is null.
+   * @param {Climb|null} c
+   * @returns {void}
+   */
+  function showOnMap(c) {
+    window.postMessage(
+      { __climbNamerGarmin: true, type: 'showClimb', points: c ? c.points.map((p) => [p[0], p[1]]) : null },
+      location.origin
+    );
   }
 
   // ---------- bands on Garmin's elevation chart ----------

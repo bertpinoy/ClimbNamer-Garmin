@@ -20,8 +20,9 @@ Sister project: [ClimbNamer for Hammerhead Dashboard](https://github.com/bertpin
 - **ClimbNamer panel** with every climb: name, length, average grade, elevation gain
   and where the climb starts.
 - **Climbs on the elevation chart:** orange bands on Garmin's own elevation profile,
-  numbered like the panel. Hover a climb in the panel to highlight it; click it to pick
-  it out on the chart.
+  numbered like the panel. Hover a climb in the panel to highlight it on the chart.
+- **Click a climb** in the panel to zoom Garmin's map to it: the climb is drawn in orange
+  on the route and picked out on the chart. Click it again to clear the highlight.
 - **Rename** a climb with ✎. Your name is used for that climb on every course.
 - **Fast:** summit names are instant for Belgium, the Netherlands and Luxembourg, and
   for any area you looked at before; every climb is looked up only once.
@@ -102,7 +103,7 @@ cache.
 |---|---|
 | `extension/` | The extension (Manifest V3). This folder is what gets packaged. |
 | `extension/climbs.js` | Climb detection from a course's elevation profile |
-| `extension/inject.js` | Runs in the page; reads the course data Garmin Connect loads (read-only) |
+| `extension/inject.js` | Runs in the page; reads the course data Garmin Connect loads (read-only) and zooms the map to a clicked climb |
 | `extension/content.js`, `content.css` | Panel, climb bands on the elevation chart, rename |
 | `extension/background.js`, `naming.js` | OpenStreetMap lookups, cache, fair-use limits |
 | `extension/summits.js`, `extension/data/` | Instant summit names: bundled Benelux summits and downloaded areas |
@@ -124,8 +125,8 @@ fixes in sync.
    [`store/listing.md`](store/listing.md).
 
 If Garmin changes Garmin Connect, the parts most likely to need an update are the API
-URL patterns in `extension/inject.js` and the Recharts selectors in
-`extension/content.js` (`findChart`, `xTicks`).
+URL patterns and the map lookup (`findMap`) in `extension/inject.js`, and the Recharts
+selectors in `extension/content.js` (`findChart`, `xTicks`).
 
 ---
 

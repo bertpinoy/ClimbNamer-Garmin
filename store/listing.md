@@ -35,7 +35,7 @@ When you open a course on connect.garmin.com, ClimbNamer detects its climbs from
 • length, average gradient and elevation gain
 • where on the course it starts
 
-The climbs also appear on Garmin's own elevation chart, as orange numbered bands. Hover a climb in the panel to highlight it; click it to pick it out on the chart.
+The climbs also appear on Garmin's own elevation chart, as orange numbered bands. Hover a climb in the panel to highlight it on the chart; click it and the map zooms to the climb, drawn in orange on your route.
 
 WHY YOU'LL LIKE IT
 • Plan better: see which climbs are on a course before you send it to your Edge or watch.
@@ -108,7 +108,7 @@ to look up names); leave the other categories unticked. Tick all three certifica
 Make 1280×800 screenshots in a desktop browser window, for example:
 
 1. A course with the ClimbNamer panel and the orange climb bands on the elevation chart.
-2. A climb picked out (clicked in the panel) on the chart.
+2. A climb clicked in the panel: map zoomed to the climb (orange on the route) and picked out on the chart.
 3. A long or hilly course with many climbs.
 
 Tip: pick courses that don't start at your home address.
