@@ -2,6 +2,8 @@
 
 # ClimbNamer — for Garmin Connect
 
+[![License](https://img.shields.io/github/license/bertpinoy/ClimbNamer-Garmin)](https://github.com/bertpinoy/ClimbNamer-Garmin/blob/main/LICENSE)
+
 A Chrome / Edge extension that **finds the climbs on your Garmin Connect courses and gives
 them names**. Garmin Connect shows a course's elevation profile, but doesn't tell you
 where the climbs are or what they're called. ClimbNamer does: *Kemmelberg*, *Rodeberg*,
@@ -132,6 +134,9 @@ If Garmin changes Garmin Connect, the parts most likely to need an update are th
 URL patterns and the map lookup (`findMap`) in `extension/inject.js`, and the Recharts
 selectors in `extension/content.js` (`findChart`, `xTicks`).
 
----
+## License
+
+Copyright 2026 bertpinoy. The code is licensed under the [Apache License 2.0](LICENSE).
+Map data is not covered by this license; see below.
 
 Map data © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL. See [DATA-LICENSE.md](DATA-LICENSE.md).
