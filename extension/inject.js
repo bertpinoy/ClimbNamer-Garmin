@@ -52,14 +52,25 @@
   /** @param {string} url @returns {boolean} */
   const watched = (url) => COURSE.test(url) || FEATURES.test(url);
 
-  // ---------- zoom Garmin's map to a climb ----------
+  // ---------- climbs on Garmin's map ----------
   // Garmin Connect's course map is a Leaflet map rendered by React. It isn't exposed
   // on window, so it's found through the React tree of the map container.
 
-  /** @type {any} the climb highlight drawn on the map (a Leaflet layer group) */
-  let highlight = null;
-  /** @type {string} map pane above Garmin's course line panes (z 430–450), below markers (610) */
+  /** @type {string} map pane for the climb lines: above Garmin's course line panes (z 430–450) */
   const PANE = 'climbNamerPane';
+  /** @type {string} map pane for the numbered badges: above the lines, below Garmin's markers (610) */
+  const BADGE_PANE = 'climbNamerBadgePane';
+
+  /**
+   * @typedef {{ climbs: Array<{ points: number[][] }>|null, active: number, zoom: boolean }} MapRequest
+   */
+
+  /** @type {MapRequest|null} the latest request from the panel, redrawn when the map is rebuilt */
+  let request = null;
+  /** @type {any} the Leaflet layer group with the climbs */
+  let layer = null;
+  /** @type {any} the map the layer was drawn on */
+  let drawnOn = null;
 
   /**
    * @param {any} x
@@ -96,44 +107,98 @@
   }
 
   /**
-   * Draws a climb on the map and zooms to it; with no points, removes the highlight.
-   * @param {number[][]|null} points [lat, lon, …] along the climb
+   * Creates a map pane once.
+   * @param {any} map
+   * @param {string} name
+   * @param {string} zIndex
    * @returns {void}
    */
-  function showOnMap(points) {
+  function ensurePane(map, name, zIndex) {
+    if (map.getPane(name)) return;
+    const pane = map.createPane(name);
+    pane.style.zIndex = zIndex;
+    pane.style.pointerEvents = 'none';
+  }
+
+  /**
+   * Removes the climbs from the map.
+   * @returns {void}
+   */
+  function clearLayer() {
+    if (layer) {
+      try { layer.remove(); } catch (e) {}
+    }
+    layer = null;
+    drawnOn = null;
+  }
+
+  /**
+   * Draws all climbs of the course on Garmin's map (the active one stronger, on top)
+   * and zooms to the active climb when asked.
+   * @param {boolean} zoom
+   * @returns {void}
+   */
+  function draw(zoom) {
+    clearLayer();
     const map = findMap();
-    if (highlight) {
-      try { highlight.remove(); } catch (e) {}
-      highlight = null;
-    }
-    if (!map || !points || points.length < 2) return;
-    const latlngs = points.map((p) => [p[0], p[1]]);
     const L = /** @type {any} */ (window).L;
-    if (L && typeof L.polyline === 'function' && typeof L.layerGroup === 'function') {
-      if (!map.getPane(PANE)) {
-        const pane = map.createPane(PANE);
-        pane.style.zIndex = '455';
-        pane.style.pointerEvents = 'none';
+    if (!map || !request || !request.climbs || !request.climbs.length || !L || typeof L.polyline !== 'function') return;
+    ensurePane(map, PANE, '455');
+    ensurePane(map, BADGE_PANE, '456');
+    /** @type {object} */
+    const line = { pane: PANE, interactive: false, lineCap: 'round', lineJoin: 'round' };
+    /** @type {any[]} */
+    const layers = [];
+    // Inactive climbs first, the active one last so it's drawn on top.
+    const order = request.climbs.map((_, i) => i).sort((a, b) => (a === request.active ? 1 : 0) - (b === request.active ? 1 : 0));
+    for (const i of order) {
+      const pts = request.climbs[i].points;
+      if (!pts || pts.length < 2) continue;
+      const active = i === request.active;
+      const latlngs = pts.map((p) => [p[0], p[1]]);
+      layers.push(L.polyline(latlngs, { ...line, color: '#0c1220', weight: active ? 11 : 8, opacity: active ? 0.6 : 0.35 }));
+      layers.push(L.polyline(latlngs, { ...line, color: '#ff6b1a', weight: active ? 7 : 5, opacity: active ? 1 : 0.85 }));
+      // Numbered badge at the top of the climb (highest point), like the panel and chart.
+      let top = pts[pts.length - 1];
+      for (const p of pts) if (p.length > 2 && top.length > 2 && p[2] > top[2]) top = p;
+      if (typeof L.marker === 'function' && typeof L.divIcon === 'function') {
+        layers.push(L.marker([top[0], top[1]], {
+          pane: BADGE_PANE,
+          interactive: false,
+          keyboard: false,
+          icon: L.divIcon({ className: 'cn-map-badge' + (active ? ' cn-map-badge-active' : ''), html: String(i + 1), iconSize: active ? [24, 24] : [20, 20] }),
+        }));
       }
-      /** @type {object} */
-      const common = { pane: PANE, interactive: false, lineCap: 'round', lineJoin: 'round' };
-      highlight = L.layerGroup([
-        L.polyline(latlngs, { ...common, color: '#0c1220', weight: 10, opacity: 0.55 }), // dark outline
-        L.polyline(latlngs, { ...common, color: '#ff6b1a', weight: 6, opacity: 1 }),
-      ]).addTo(map);
     }
-    map.flyToBounds(latlngs, { padding: [60, 60], maxZoom: 16, duration: 0.8 });
+    layer = L.layerGroup(layers).addTo(map);
+    drawnOn = map;
+    const a = request.active >= 0 ? request.climbs[request.active] : null;
+    if (zoom && a && a.points && a.points.length > 1) {
+      map.flyToBounds(a.points.map((p) => [p[0], p[1]]), { padding: [60, 60], maxZoom: 16, duration: 0.8 });
+    }
   }
 
   // Requests from the content script (the ClimbNamer panel).
   window.addEventListener('message', (ev) => {
-    if (ev.source !== window || !ev.data || !ev.data.__climbNamerGarmin || ev.data.type !== 'showClimb') return;
+    if (ev.source !== window || !ev.data || !ev.data.__climbNamerGarmin || ev.data.type !== 'mapClimbs') return;
+    request = ev.data.climbs ? { climbs: ev.data.climbs, active: ev.data.active ?? -1, zoom: !!ev.data.zoom } : null;
     try {
-      showOnMap(ev.data.points || null);
+      if (request) draw(request.zoom);
+      else clearLayer();
     } catch (e) {
-      console.warn('[ClimbNamer] could not zoom the map', e);
+      console.warn('[ClimbNamer] could not draw the climbs on the map', e);
     }
   });
+
+  // Garmin builds the map after the course data arrives, and rebuilds it on navigation:
+  // redraw (without zooming) when the map we drew on is gone or replaced.
+  setInterval(() => {
+    if (!request || !request.climbs) return;
+    const map = findMap();
+    if (map && (map !== drawnOn || !layer || !map.hasLayer(layer))) {
+      try { draw(false); } catch (e) {}
+    }
+  }, 800);
 
   const origFetch = window.fetch;
   window.fetch = function (input) {

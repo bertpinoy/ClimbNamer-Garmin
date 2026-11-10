@@ -159,10 +159,10 @@
     const id = courseIdFromUrl();
     const next = (id && byCourse.get(id)) || null;
     if (next !== current) {
-      if (activeClimb) showOnMap(null);
       current = next;
       activeClimb = null;
       render();
+      syncMap(false);
     }
   }
   setInterval(syncCurrent, 600);
@@ -263,7 +263,8 @@
   }
 
   /**
-   * Highlights a climb on the chart and scrolls the chart into view.
+   * Selects (or deselects) a climb: highlighted in the panel, on the chart and on the
+   * map, which zooms to it.
    * @param {Climb} c
    * @returns {void}
    */
@@ -271,22 +272,21 @@
     activeClimb = activeClimb === c ? null : c;
     renderPanel();
     drawBands();
-    showOnMap(activeClimb);
+    syncMap(!!activeClimb);
     const svg = findChart()?.svg;
     if (svg && activeClimb) svg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   /**
-   * Asks the page script (inject.js) to zoom Garmin's map to a climb and draw it,
-   * or to remove the highlight when c is null.
-   * @param {Climb|null} c
+   * Sends all climbs of the open course to the page script (inject.js), which draws
+   * them on Garmin's map; the selected one stronger. With no course, clears the map.
+   * @param {boolean} zoom zoom the map to the selected climb
    * @returns {void}
    */
-  function showOnMap(c) {
-    window.postMessage(
-      { __climbNamerGarmin: true, type: 'showClimb', points: c ? c.points.map((p) => [p[0], p[1]]) : null },
-      location.origin
-    );
+  function syncMap(zoom) {
+    const climbs = current && current.climbs.length ? current.climbs.map((c) => ({ points: c.points })) : null;
+    const active = current && activeClimb ? current.climbs.indexOf(activeClimb) : -1;
+    window.postMessage({ __climbNamerGarmin: true, type: 'mapClimbs', climbs, active, zoom }, location.origin);
   }
 
   // ---------- bands on Garmin's elevation chart ----------

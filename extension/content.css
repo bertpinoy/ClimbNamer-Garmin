@@ -108,3 +108,12 @@
 .cn-band-active { fill: rgba(255, 107, 26, 0.42); stroke: #ff6b1a; stroke-width: 1.5; }
 .cn-band-label { fill: #e84a0c; font: 700 11px "Bahnschrift", "Segoe UI", system-ui, sans-serif; }
 .cn-band-label-active, .cn-band-label-hover { fill: #c2410c; }
+
+/* Numbered climb badges on Garmin Connect's map (drawn by inject.js) */
+.cn-map-badge {
+  display: grid; place-items: center; box-sizing: border-box;
+  border-radius: 50%; background: #ff6b1a; color: #fff; border: 2px solid #0c1220;
+  font: 700 11px/1 "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  box-shadow: 0 1px 4px rgba(8, 12, 24, 0.45);
+}
+.cn-map-badge-active { font-size: 13px; border-color: #fff; background: #e84a0c; box-shadow: 0 0 0 2px #0c1220, 0 2px 6px rgba(8, 12, 24, 0.5); }
