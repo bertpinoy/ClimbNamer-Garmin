@@ -1,0 +1,110 @@
+/* ClimbNamer panel: dark "night ride" style with orange accent (same as ClimbNamer for Hammerhead). */
+#hhcn-panel {
+  --hhcn-orange: #ff6b1a;
+  --hhcn-orange-soft: rgba(255, 107, 26, 0.12);
+  --hhcn-bg: #1e2940;
+  --hhcn-bg-2: #172033;
+  --hhcn-line: #33415c;
+  --hhcn-text: #ffffff;
+  --hhcn-mist: #94a3b8;
+  --hhcn-display: "Bahnschrift", "DIN Alternate", "DIN Next", "Barlow", "Segoe UI", system-ui, sans-serif;
+
+  position: fixed;
+  top: 72px;
+  right: 64px; /* clear of Garmin's map controls on the right */
+  z-index: 2147483000;
+  width: 310px;
+  max-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--hhcn-bg), var(--hhcn-bg-2));
+  color: var(--hhcn-text);
+  border: 1px solid var(--hhcn-line);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(8, 12, 24, 0.35), 0 2px 6px rgba(8, 12, 24, 0.25);
+  font: 13px/1.35 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  overflow: hidden;
+}
+#hhcn-panel.hhcn-collapsed { width: auto; }
+#hhcn-panel button { font: inherit; }
+
+/* Header */
+#hhcn-panel .hhcn-head {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 11px 14px; border: 0; cursor: pointer;
+  background: transparent; color: var(--hhcn-text); text-align: left;
+  font-family: var(--hhcn-display); font-size: 15px; font-weight: 600; letter-spacing: 0.01em;
+}
+#hhcn-panel:not(.hhcn-collapsed) .hhcn-head { border-bottom: 1px solid var(--hhcn-line); }
+#hhcn-panel .hhcn-head-title { flex: 1; }
+#hhcn-panel .hhcn-head-title b { color: var(--hhcn-orange); font-weight: 700; }
+#hhcn-panel .hhcn-count {
+  min-width: 26px; padding: 1px 8px; border-radius: 999px; text-align: center;
+  background: var(--hhcn-orange); color: #fff; font-size: 12px; font-weight: 700;
+}
+#hhcn-panel .hhcn-caret { color: var(--hhcn-mist); font-size: 11px; width: 12px; text-align: center; }
+
+/* Rows */
+#hhcn-panel .hhcn-list { list-style: none; margin: 0; padding: 4px 0; overflow-y: auto; }
+#hhcn-panel .hhcn-row {
+  display: flex; gap: 10px; padding: 9px 12px 9px 14px; align-items: flex-start;
+  cursor: pointer; transition: background-color 0.15s, box-shadow 0.15s;
+}
+#hhcn-panel .hhcn-row + .hhcn-row { border-top: 1px solid rgba(51, 65, 92, 0.7); }
+#hhcn-panel .hhcn-row:hover { background: rgba(255, 255, 255, 0.04); }
+#hhcn-panel .hhcn-row.hhcn-active { background: var(--hhcn-orange-soft); box-shadow: inset 3px 0 0 var(--hhcn-orange); }
+#hhcn-panel .hhcn-row.hhcn-busy { opacity: 0.6; cursor: progress; }
+#hhcn-panel .hhcn-row.hhcn-failed { background: rgba(239, 68, 68, 0.18); }
+#hhcn-panel .hhcn-num {
+  flex: none; width: 24px; height: 24px; border-radius: 7px; margin-top: 1px;
+  display: grid; place-items: center;
+  background: var(--hhcn-line); color: #fff;
+  font-family: var(--hhcn-display); font-size: 13px; font-weight: 700;
+  transition: background-color 0.15s;
+}
+#hhcn-panel .hhcn-row:hover .hhcn-num,
+#hhcn-panel .hhcn-row.hhcn-active .hhcn-num { background: var(--hhcn-orange); }
+#hhcn-panel .hhcn-main { flex: 1; min-width: 0; }
+#hhcn-panel .hhcn-name {
+  font-family: var(--hhcn-display); font-size: 16px; font-weight: 600; letter-spacing: 0.01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+#hhcn-panel .hhcn-detail { color: var(--hhcn-mist); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#hhcn-panel .hhcn-stats { color: var(--hhcn-orange); font-size: 12px; font-weight: 600; margin-top: 1px; }
+#hhcn-panel .hhcn-name-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+#hhcn-panel .hhcn-name-row .hhcn-name { min-width: 0; }
+#hhcn-panel .hhcn-src {
+  flex: none; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--hhcn-line);
+  color: var(--hhcn-mist); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+}
+#hhcn-panel .hhcn-custom .hhcn-src { color: var(--hhcn-orange); border-color: rgba(255, 107, 26, 0.5); }
+#hhcn-panel .hhcn-pending .hhcn-name { color: var(--hhcn-mist); font-weight: 400; font-style: italic; }
+#hhcn-panel .hhcn-error .hhcn-name { color: #f87171; }
+
+/* Row actions */
+#hhcn-panel .hhcn-actions { display: flex; gap: 2px; flex: none; opacity: 0.55; transition: opacity 0.15s; }
+#hhcn-panel .hhcn-row:hover .hhcn-actions,
+#hhcn-panel .hhcn-row.hhcn-active .hhcn-actions { opacity: 1; }
+#hhcn-panel .hhcn-actions button,
+#hhcn-panel .hhcn-actions a {
+  width: 26px; height: 26px; display: grid; place-items: center; border: 0; border-radius: 7px;
+  background: transparent; color: var(--hhcn-mist); cursor: pointer; text-decoration: none; font-size: 14px;
+}
+#hhcn-panel .hhcn-actions button:hover,
+#hhcn-panel .hhcn-actions a:hover { background: rgba(255, 107, 26, 0.16); color: var(--hhcn-orange); }
+
+/* Retry */
+#hhcn-panel .hhcn-retry {
+  margin: 4px 12px 12px; padding: 7px; border: 1px solid var(--hhcn-orange); border-radius: 8px;
+  background: transparent; color: var(--hhcn-orange); cursor: pointer; font-weight: 600;
+}
+#hhcn-panel .hhcn-retry:hover { background: var(--hhcn-orange); color: #fff; }
+
+#hhcn-panel :focus-visible { outline: 2px solid var(--hhcn-orange); outline-offset: 2px; }
+
+/* Climb bands drawn on Garmin Connect's elevation chart */
+.cn-band { fill: rgba(255, 107, 26, 0.16); transition: fill 0.15s; }
+.cn-band-hover { fill: rgba(255, 107, 26, 0.30); }
+.cn-band-active { fill: rgba(255, 107, 26, 0.42); stroke: #ff6b1a; stroke-width: 1.5; }
+.cn-band-label { fill: #e84a0c; font: 700 11px "Bahnschrift", "Segoe UI", system-ui, sans-serif; }
+.cn-band-label-active, .cn-band-label-hover { fill: #c2410c; }

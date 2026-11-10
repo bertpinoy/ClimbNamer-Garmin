@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ClimbNamer — settings</title>
+  <style>
+    :root { --orange: #ff6b1a; --orange-deep: #e84a0c; --navy: #0c1220; --slate: #1e2940; --mist: #64748b; --line: #e2e8f0;
+            --display: "Bahnschrift", "DIN Alternate", "Barlow", "Segoe UI", system-ui, sans-serif; }
+    body { font: 14px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; max-width: 720px; margin: 0 auto 40px; padding: 0 16px; color: #1b1f23; background: #fff; accent-color: var(--orange); }
+    header { display: flex; align-items: center; gap: 14px; margin: 0 -16px; padding: 22px 24px; background: linear-gradient(180deg, var(--slate), var(--navy)); border-radius: 0 0 16px 16px; }
+    header img { width: 48px; height: 48px; }
+    h1 { font-family: var(--display); font-size: 26px; font-weight: 700; margin: 0; color: #fff; letter-spacing: 0.01em; }
+    h1 b { color: var(--orange); }
+    header .sub { font-family: var(--display); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; color: #94a3b8; }
+    p.lead { color: var(--mist); margin-top: 20px; }
+    h2 { font-family: var(--display); font-size: 16px; font-weight: 600; margin-top: 30px; letter-spacing: 0.01em; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+    th { font-weight: 600; color: var(--mist); font-size: 12px; }
+    button { font: inherit; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--orange); background: #fff; color: var(--orange-deep); font-weight: 600; cursor: pointer; }
+    button:hover { background: var(--orange); color: #fff; }
+    label.switch { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+    label.switch input { margin-top: 4px; width: 16px; height: 16px; }
+    .muted { color: var(--mist); }
+    .ok { color: #2f855a; margin-left: 8px; }
+    footer { margin-top: 36px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 12px; color: var(--mist); }
+    a { color: var(--orange-deep); }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon-48.png" alt="">
+    <div>
+      <h1>Climb<b>Namer</b></h1>
+      <div class="sub">FOR GARMIN CONNECT</div>
+    </div>
+  </header>
+  <p class="lead">ClimbNamer finds the climbs on your Garmin Connect courses and names them with OpenStreetMap: a named summit or pass near the top of the climb, otherwise the road the climb follows. Rename a climb with ✎ in the panel on the course page; your own names are listed below.</p>
+
+  <h2>Your climb names</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Top of climb</th><th></th></tr></thead>
+    <tbody id="overrides"></tbody>
+  </table>
+  <p id="empty" class="muted" hidden>No custom names yet.</p>
+
+  <h2>Cache</h2>
+  <p class="muted">Looked-up names, and the named summits of areas you rode or planned in, are stored in your browser so each climb and area is only looked up once. Clear the cache to look them up again, for example after OpenStreetMap was improved.</p>
+  <button id="clear">Clear name cache</button><span id="cleared" class="ok" hidden>Cleared</span>
+
+  <footer>
+    ClimbNamer is an independent project and is not affiliated with, endorsed by or sponsored by Garmin.
+    Garmin, Garmin Connect and ClimbPro are trademarks of Garmin Ltd. or its subsidiaries.<br>
+    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, ODbL.
+    · <a href="https://github.com/bertpinoy/ClimbNamer-Garmin/blob/main/PRIVACY.md" target="_blank" rel="noopener">Privacy policy</a>
+    · <a href="https://github.com/bertpinoy/ClimbNamer-Garmin" target="_blank" rel="noopener">Source code</a>
+  </footer>
+  <script src="options.js"></script>
+</body>
+</html>

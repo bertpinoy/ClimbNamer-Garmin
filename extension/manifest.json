@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "ClimbNamer - for Garmin Connect",
+  "short_name": "ClimbNamer",
+  "version": "1.0.0",
+  "description": "Finds and names the climbs on your Garmin Connect courses, using OpenStreetMap. Not affiliated with Garmin.",
+  "homepage_url": "https://github.com/bertpinoy/ClimbNamer-Garmin",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": ["storage", "declarativeNetRequestWithHostAccess"],
+  "host_permissions": [
+    "https://overpass-api.de/*",
+    "https://overpass.kumi.systems/*",
+    "https://nominatim.openstreetmap.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://connect.garmin.com/*"],
+      "js": ["climbs.js", "inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://connect.garmin.com/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "ClimbNamer — settings",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    }
+  }
+}
