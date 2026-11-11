@@ -128,27 +128,57 @@
   });
 
   /**
-   * Looks up names for the climbs of a course that don't have one yet.
+   * Looks up names for the climbs of a course that don't have one yet, in two steps:
+   * 1. localOnly: names from the cache and local summit data, shown immediately;
+   * 2. a normal lookup (network) for the climbs that are still unnamed.
+   * So a climb that needs a slow lookup doesn't hold back names that are known locally.
    * @param {CourseEntry} entry
    * @returns {void}
    */
   function requestNames(entry) {
+    /** @type {Climb[]} */
     const todo = entry.climbs.filter((c) => !c.auto);
     if (!todo.length) return;
     todo.forEach((c) => delete c.error);
     render();
-    chrome.runtime.sendMessage(
-      { type: 'nameClimbs', climbs: todo.map((c) => ({ start: c.start, top: c.top, maxEle: c.maxEle, points: c.points })) },
-      (res) => {
-        const fail = chrome.runtime.lastError?.message || (!res ? 'no response' : !res.ok ? res.error : null);
+
+    /**
+     * @param {Climb[]} climbs
+     * @param {boolean} localOnly
+     * @param {(res: { ok: boolean, names?: Array<ClimbName|{ error: string }|null>, error?: string }|undefined) => void} done
+     * @returns {void}
+     */
+    const ask = (climbs, localOnly, done) => chrome.runtime.sendMessage(
+      {
+        type: 'nameClimbs',
+        localOnly,
+        climbs: climbs.map((c) => ({ start: c.start, top: c.top, maxEle: c.maxEle, points: c.points })),
+      },
+      done
+    );
+
+    ask(todo, true, (quick) => {
+      if (!chrome.runtime.lastError && quick && quick.ok && quick.names) {
+        const names = quick.names;
         todo.forEach((c, i) => {
-          const r = fail ? { error: fail } : res.names[i];
-          if (r && r.error) c.error = r.error;
-          else c.auto = r;
+          const r = names[i];
+          if (r && !('error' in r)) c.auto = r;
         });
         render();
       }
-    );
+      /** @type {Climb[]} */
+      const rest = todo.filter((c) => !c.auto);
+      if (!rest.length) return;
+      ask(rest, false, (res) => {
+        const fail = chrome.runtime.lastError?.message || (!res ? 'no response' : !res.ok ? res.error : null);
+        rest.forEach((c, i) => {
+          const r = fail ? { error: String(fail) } : res && res.names ? res.names[i] : null;
+          if (r && 'error' in r) c.error = r.error;
+          else if (r) c.auto = /** @type {ClimbName} */ (r);
+        });
+        render();
+      });
+    });
   }
 
   /**

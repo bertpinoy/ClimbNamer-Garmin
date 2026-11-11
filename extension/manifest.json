@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ClimbNamer - for Garmin Connect",
   "short_name": "ClimbNamer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Finds and names the climbs on your Garmin Connect courses, using OpenStreetMap. Not affiliated with Garmin.",
   "homepage_url": "https://github.com/bertpinoy/ClimbNamer-Garmin",
   "icons": {

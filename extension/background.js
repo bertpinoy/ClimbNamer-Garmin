@@ -38,26 +38,35 @@ function climbKey(c) {
   return `v${CACHE_VERSION}:${r(c.start[0])},${r(c.start[1])}>${r(c.top[0])},${r(c.top[1])}`;
 }
 
-// background: true for prefetch from list pages (lower priority).
 /**
  * Names for a list of climbs: from the cache, from local summit data, or looked up.
  * @param {Array<{ start: number[], top: number[], maxEle?: number, points: number[][] }>} climbs
  * @param {boolean} background true for low-priority lookups
- * @returns {Promise<Array<object>>} one { name, detail, source } or { error } per climb
+ * @param {boolean} [localOnly] true: answer only from the cache and local summit data,
+ *   without any network request (null for the rest). Lets the panel show those names
+ *   immediately instead of waiting for the slowest climb of the course.
+ * @returns {Promise<Array<object|null>>} one { name, detail, source }, { error } or null per climb
  */
-async function getNames(climbs, background) {
+async function getNames(climbs, background, localOnly = false) {
+  /** @type {string[]} */
   const keys = climbs.map(climbKey);
   const cached = await chrome.storage.local.get(keys);
-  const results = new Array(climbs.length);
+  /** @type {Array<object|null>} */
+  const results = new Array(climbs.length).fill(null);
+  /** @type {number[]} */
   const todo = [];
+  /** @type {Promise<unknown>[]} */
   const waits = [];
 
+  /** @type {number[]} */
   const unresolved = [];
   climbs.forEach((c, i) => {
     const k = keys[i];
     if (cached[k]) {
       results[i] = cached[k];
       if (cached[k].needsDetail) enrichLater(climbs[i], k, cached[k]);
+    } else if (localOnly) {
+      unresolved.push(i);
     } else if (inflight.has(k) && (background || !inflight.get(k).prio.low)) {
       waits.push(inflight.get(k).p.then((r) => (results[i] = r)));
     } else {
@@ -82,6 +91,7 @@ async function getNames(climbs, background) {
     enrichLater(climbs[i], keys[i], r);
   }));
   todo.sort((a, b) => a - b);
+  if (localOnly) return results;
 
   if (todo.length) {
     const prio = { low: !!background };
@@ -149,7 +159,7 @@ chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
 
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg?.type === 'nameClimbs') {
-    getNames(msg.climbs, !!msg.background)
+    getNames(msg.climbs, !!msg.background, !!msg.localOnly)
       .then((names) => sendResponse({ ok: true, names }))
       .catch((e) => sendResponse({ ok: false, error: String((e && e.message) || e) }));
     return true; // async response
