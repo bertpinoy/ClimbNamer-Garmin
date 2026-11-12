@@ -1,47 +1,52 @@
 <p align="center"><img src="extension/icons/icon-128.png" width="96" alt="ClimbNamer icon"></p>
 
-# ClimbNamer — for Garmin Connect
+# ClimbNamer — for Garmin Connect and Strava
 
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)
 [![Users](https://img.shields.io/chrome-web-store/users/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)
 [![License](https://img.shields.io/github/license/bertpinoy/ClimbNamer-Garmin)](https://github.com/bertpinoy/ClimbNamer-Garmin/blob/main/LICENSE)
 
-A Chrome / Edge extension that **finds the climbs on your Garmin Connect courses and gives
-them names**. Garmin Connect shows a course's elevation profile, but doesn't tell you
+A Chrome / Edge extension that **finds the climbs on your Garmin Connect courses and
+Strava routes and gives them names**. Both show an elevation profile, but don't tell you
 where the climbs are or what they're called. ClimbNamer does: *Kemmelberg*, *Rodeberg*,
 *Col du Galibier*…
 
-**[➜ Install ClimbNamer for Garmin Connect from the Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)**
+**[➜ Install ClimbNamer for Garmin Connect and Strava from the Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)**
 (works in Google Chrome and Microsoft Edge)
 
-> **Not affiliated with Garmin.** ClimbNamer is an independent project. It is not
-> endorsed or sponsored by Garmin. Garmin, Garmin Connect and ClimbPro are trademarks of
-> Garmin Ltd. or its subsidiaries.
+> **Not affiliated with Garmin or Strava.** ClimbNamer is an independent project. It is
+> not endorsed or sponsored by Garmin or Strava. Garmin, Garmin Connect and ClimbPro are
+> trademarks of Garmin Ltd. or its subsidiaries; Strava is a trademark of Strava, Inc.
 
 Sister project: [ClimbNamer for Hammerhead Dashboard](https://github.com/bertpinoy/ClimbNamer).
+The Strava support was developed in [Climbnamer-Strava](https://github.com/bertpinoy/Climbnamer-Strava)
+and is now part of this extension.
 
 ![ClimbNamer on a course in Garmin Connect](store/screenshots/1-course-climbs-map-and-chart.png)
 
 ## Features
 
-- **Climbs detected automatically** on every course you open in Garmin Connect, with
-  criteria similar to Garmin's ClimbPro.
+- **Climbs detected automatically** on every course you open in Garmin Connect and every
+  route you open on Strava, with criteria similar to Garmin's ClimbPro.
 - **ClimbNamer panel** with every climb: name, length, average grade, elevation gain
   and where the climb starts.
-- **Climbs on the elevation chart:** orange bands on Garmin's own elevation profile,
+- **Climbs on the elevation chart:** orange bands on the site's own elevation profile,
   numbered like the panel. Hover a climb in the panel to highlight it on the chart.
-- **Climbs on the map:** every climb is drawn in orange on Garmin's route line, with a
-  numbered badge at its top.
-- **Click a climb** in the panel to zoom the map to it; it's drawn stronger on the map and
-  picked out on the chart. Click it again to deselect it.
-- **Rename** a climb with ✎. Your name is used for that climb on every course.
+- **Garmin Connect, climbs on the map:** every climb is drawn in orange on Garmin's route
+  line, with a numbered badge at its top. Click a climb in the panel to zoom the map to it;
+  click it again to deselect it.
+- **Strava, climb top on the map:** Strava draws its map with its own engine, which
+  extensions can't draw on. Click a climb in the panel and Strava shows its own marker at
+  the top of the climb (with distance and elevation).
+- **Rename** a climb with ✎. Your name is used for that climb on every course and route.
 - **Fast:** summit names are instant for Belgium, the Netherlands and Luxembourg, and
   for any area you looked at before; every climb is looked up only once.
 
 ## How climbs are detected
 
-Garmin Connect doesn't list the climbs of a course, so ClimbNamer detects them from the
-course's elevation profile (the points Garmin Connect itself loads for the course page):
+Neither Garmin Connect nor Strava lists the climbs, so ClimbNamer detects them from the
+elevation profile the page itself already has: the points Garmin Connect loads for a
+course page, and the route data Strava embeds in a route page:
 
 - the profile is resampled every 20 m and smoothed over 100 m against elevation noise;
 - a climb is a steady rise to a top: it starts where the slope (over 200 m) stays at
@@ -66,8 +71,8 @@ All names come from [OpenStreetMap](https://www.openstreetmap.org):
 3. otherwise *Climb near &lt;village&gt;*.
 
 **Instant summit names.** Summits for **Belgium, the Netherlands and Luxembourg** are
-included in the extension (about 1,150). **Elsewhere**, the first time you open a course
-in an area, the named summits of that area (about 55 × 50 km) are downloaded once and
+included in the extension (about 1,150). **Elsewhere**, the first time you open a course or
+route in an area, the named summits of that area (about 55 × 50 km) are downloaded once and
 kept on your device.
 
 If a name is wrong or missing, fix it in OpenStreetMap (everyone benefits) or rename the
@@ -83,13 +88,13 @@ ClimbNamer uses free public services run by volunteers and non-profits:
 - **One request at a time:** Overpass mirrors are tried one after another, and Nominatim
   gets at most 1 request per second, as its
   [usage policy](https://operations.osmfoundation.org/policies/nominatim/) requires.
-- Lookups only happen for the course you open; there are no background lookups.
+- Lookups only happen for the course or route you open; there are no background lookups.
 - Requests identify the app as `ClimbNamer/<version> (+https://github.com/bertpinoy/ClimbNamer-Garmin)`.
 
 ## Privacy
 
-No accounts, no analytics, no server of our own. ClimbNamer reads the course data the
-Garmin Connect page already loads, inside your browser. Only climb coordinates (and the
+No accounts, no analytics, no server of our own. ClimbNamer reads the course or route
+data the Garmin Connect or Strava page already has, inside your browser. Only climb coordinates (and the
 outline of the area around them) are sent to the OpenStreetMap services to find names.
 See the [privacy policy](PRIVACY.md).
 
@@ -107,7 +112,8 @@ Updates are installed automatically.
 2. Open `chrome://extensions` (Chrome) or `edge://extensions` (Edge).
 3. Turn on **Developer mode**.
 4. Click **Load unpacked** and select the `extension` folder.
-5. Open a course in <https://connect.garmin.com> (Training & Planning → Courses).
+5. Open a course in <https://connect.garmin.com> (Training & Planning → Courses) or a
+   route on <https://www.strava.com>.
 
 Click the ClimbNamer toolbar icon to open the settings: your custom names and the name
 cache.
@@ -117,9 +123,12 @@ cache.
 | Path | Contents |
 |---|---|
 | `extension/` | The extension (Manifest V3). This folder is what gets packaged. |
-| `extension/climbs.js` | Climb detection from a course's elevation profile |
-| `extension/inject.js` | Runs in the page; reads the course data Garmin Connect loads (read-only) and draws the climbs on the map |
-| `extension/content.js`, `content.css` | Panel, climb bands on the elevation chart, rename |
+| `extension/climbs.js` | Climb detection from an elevation profile (Garmin courses and Strava routes) |
+| `extension/garmin-inject.js` | Garmin Connect, in the page: reads the course data (read-only) and draws the climbs on the map |
+| `extension/garmin-content.js` | Garmin Connect: panel, climb bands on the elevation chart, rename |
+| `extension/strava-inject.js` | Strava, in the page: reads the route data the page embeds or loads (read-only) |
+| `extension/strava-content.js` | Strava: panel, climb bands on the elevation chart, climb top on the map, rename |
+| `extension/content.css` | Panel and chart band styles (both sites) |
 | `extension/background.js`, `naming.js` | OpenStreetMap lookups, cache, fair-use limits |
 | `extension/summits.js`, `extension/data/` | Instant summit names: bundled Benelux summits and downloaded areas |
 | `extension/options.*` | Settings page |
@@ -140,9 +149,14 @@ fixes in sync.
    **Package → Upload new package**). The listing texts are in
    [`store/listing.md`](store/listing.md).
 
-If Garmin changes Garmin Connect, the parts most likely to need an update are the API
-URL patterns and the map lookup (`findMap`) in `extension/inject.js`, and the Recharts
-selectors in `extension/content.js` (`findChart`, `xTicks`).
+If Garmin or Strava change their pages, the parts most likely to need an update are:
+
+- Garmin Connect: the API URL patterns and the map lookup (`findMap`) in
+  `extension/garmin-inject.js`, and the Recharts selectors in `extension/garmin-content.js`
+  (`findChart`, `xTicks`);
+- Strava: the data sources in `extension/strava-inject.js` (`__NEXT_DATA__`,
+  `/_next/data/…/routes/<id>.json`) and the chart selector in
+  `extension/strava-content.js` (`ElevationChart_hitbox`).
 
 ## License
 

@@ -1,13 +1,15 @@
-// Climb detection for Garmin Connect courses.
-// Loaded in the page world (inject.js) and the extension world (content.js).
+// Climb detection for Garmin Connect courses and Strava routes.
+// Loaded in the page world (garmin-inject.js / strava-inject.js) and the extension world.
 //
-// Garmin Connect course pages don't list climbs, so ClimbNamer detects them from the
-// course's elevation profile (geoPoints: latitude, longitude, elevation, distance),
-// with criteria similar to Garmin's ClimbPro:
+// Neither site lists the climbs of a course or route, so ClimbNamer detects them from the
+// elevation profile, with criteria similar to Garmin's ClimbPro:
 //   - at least MIN_LENGTH m long and MIN_GRADE % average gradient,
 //   - "climb score" length (m) × average grade (%) ≥ MIN_SCORE,
 //   - small dips (less than HYSTERESIS m) don't split a climb.
-// If Garmin's own response ever includes climbs, those are used instead.
+// Garmin Connect: the course's geoPoints (latitude, longitude, elevation, distance); if
+// Garmin's own response ever includes climbs, those are used instead.
+// Strava: the route data embedded in the page: route.elevation ([distance, elevation]
+// pairs), route.polyline ([lat, lng] points) and route.distanceStream (distance per point).
 (() => {
   if (self.HHClimbs) return;
 
@@ -175,7 +177,7 @@
     const length = seg[seg.length - 1].d - seg[0].d;
     const rise = top.sm - seg[0].sm;
     return {
-      startDist: seg[0].d, endDist: seg[seg.length - 1].d, length,
+      startDist: seg[0].d, endDist: seg[seg.length - 1].d, topDist: top.d, length,
       gain: Math.round(Math.max(gain, rise)),
       grade: length > 0 ? (rise / length) * 100 : 0,
       maxEle: top.ele, minEle: Math.min(...seg.map((x) => x.ele)),
@@ -228,5 +230,55 @@
     return { kind: 'course', totalDist: r.totalDist, climbs: r.climbs };
   }
 
-  self.HHClimbs = { fromCourse, detectClimbs };
+  /**
+   * Position at a distance along the route, interpolated on the polyline.
+   * @param {number[][]} line [lat, lng] points
+   * @param {number[]} dist distance (m) of each point
+   * @param {number} d distance (m)
+   * @param {{ j: number }} cursor search position, moved forward (distances come in order)
+   * @returns {number[]} [lat, lng]
+   */
+  function positionAt(line, dist, d, cursor) {
+    while (cursor.j < dist.length - 2 && dist[cursor.j + 1] < d) cursor.j++;
+    const j = cursor.j;
+    const a = line[j], b = line[Math.min(j + 1, line.length - 1)];
+    const span = dist[Math.min(j + 1, dist.length - 1)] - dist[j];
+    const t = span > 0 ? Math.min(1, Math.max(0, (d - dist[j]) / span)) : 0;
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+  }
+
+  /**
+   * Profile points of a Strava route (from the page's __NEXT_DATA__ or /_next/data JSON).
+   * @param {any} route pageProps.route
+   * @returns {Array<{ latitude: number, longitude: number, elevation: number, distance: number }>|null}
+   */
+  function geoPointsFromRoute(route) {
+    const line = route && route.polyline;
+    const dist = route && route.distanceStream;
+    const elev = route && route.elevation;
+    if (!Array.isArray(line) || !Array.isArray(dist) || !Array.isArray(elev)) return null;
+    if (line.length < 2 || line.length !== dist.length || elev.length < 2) return null;
+    /** @type {{ j: number }} */
+    const cursor = { j: 0 };
+    return elev
+      .filter((e) => Array.isArray(e) && typeof e[0] === 'number' && typeof e[1] === 'number')
+      .map(([d, ele]) => {
+        const [lat, lng] = positionAt(line, dist, d, cursor);
+        return { latitude: lat, longitude: lng, elevation: ele, distance: d };
+      });
+  }
+
+  /**
+   * Climbs of a Strava route.
+   * @param {any} route pageProps.route
+   * @returns {{ kind: string, totalDist: number, climbs: object[] }|null}
+   */
+  function fromRoute(route) {
+    const geo = geoPointsFromRoute(route);
+    if (!geo || geo.length < 2) return null;
+    const r = detectClimbs(geo);
+    return { kind: 'route', totalDist: r.totalDist, climbs: r.climbs };
+  }
+
+  self.HHClimbs = { fromCourse, fromRoute, detectClimbs };
 })();

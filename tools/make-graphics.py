@@ -175,7 +175,7 @@ def wordmark(d, x, y, size, sub_size, sub_dy):
     f = bahn(size, "Bold")
     d.text((x, y), "Climb", font=f, fill=WHITE)
     d.text((x + d.textlength("Climb", font=f), y), "Namer", font=f, fill=ORANGE)
-    d.text((x + size * 0.05, y + sub_dy), "FOR GARMIN CONNECT", font=bahn(sub_size, "SemiBold"), fill=MIST)
+    d.text((x + size * 0.05, y + sub_dy), "FOR GARMIN CONNECT AND STRAVA", font=bahn(sub_size, "SemiBold"), fill=MIST)
 
 
 def card(img, x, y, w, rows):
@@ -232,7 +232,7 @@ def marquee():
     d = ImageDraw.Draw(img)
     wordmark(d, 222 * SS, 70 * SS, 84 * SS, 22 * SS, 98 * SS)
     d.text((90 * SS, 246 * SS), "Know which climbs you ride.", font=bahn(44 * SS, "SemiBold"), fill=WHITE)
-    d.text((92 * SS, 310 * SS), "Finds and names the climbs on your Garmin courses —", font=seg(24 * SS), fill=BODY)
+    d.text((92 * SS, 310 * SS), "Finds and names the climbs on your Garmin and Strava routes —", font=seg(24 * SS), fill=BODY)
     d.text((92 * SS, 344 * SS), "straight from OpenStreetMap.", font=seg(24 * SS), fill=BODY)
     card(img, 930 * SS, 48 * SS, 390 * SS, [
         ("Kemmelberg", "via Lettingstraat / Kemmelbergweg", "2.8 km · 3.8% · +124 m"),

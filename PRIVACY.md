@@ -1,26 +1,33 @@
-# ClimbNamer for Garmin Connect — Privacy Policy
+# ClimbNamer for Garmin Connect and Strava — Privacy Policy
 
-*Effective date: 10 November 2026*
+*Effective date: 12 November 2026*
 
-ClimbNamer for Garmin Connect ("the extension") is a browser extension for Google Chrome
-and Microsoft Edge that finds the climbs on courses in Garmin Connect
-(connect.garmin.com) and gives them names. This policy explains what data the extension
+ClimbNamer for Garmin Connect and Strava ("the extension") is a browser extension for
+Google Chrome and Microsoft Edge that finds the climbs on courses in Garmin Connect
+(connect.garmin.com) and on routes on Strava (www.strava.com) and gives them names. This policy explains what data the extension
 uses, where it goes, and what is stored.
 
 **In short:** the extension has no server of its own, no analytics and no tracking.
-The only data that leaves your browser is the location of the climbs on the course you
-are looking at, which is sent to public OpenStreetMap services to find their names.
+The only data that leaves your browser is the location of the climbs on the course or
+route you are looking at, which is sent to public OpenStreetMap services to find their names.
 
 ## 1. Data the extension reads
 
 While you view a course on connect.garmin.com, the extension reads, inside your browser,
 the course data that the Garmin Connect page itself loads: the course's route points
-(latitude, longitude, elevation and distance) and its name. From the route points it
-calculates where the climbs are.
+(latitude, longitude, elevation and distance) and its name. It makes no requests to
+Garmin itself.
 
-The extension does not read activities, health data, your profile or your Garmin login
-details, does not make requests to Garmin itself, and does not change anything in your
-Garmin account.
+While you view a route on www.strava.com, the extension reads, inside your browser, the
+route data that the Strava page itself contains or loads: the route's line (latitude and
+longitude), its elevation profile (distance and elevation) and its title. Only when a
+route page's data didn't arrive the usual way, the extension reads that same route page
+once more from Strava, with your existing session, as your browser would when reloading
+it.
+
+From these points the extension calculates where the climbs are. It does not read
+activities, health data, your profile or your login details on either site, and does not
+change anything in your Garmin or Strava account.
 
 ## 2. Data sent to third parties
 
@@ -38,7 +45,7 @@ summit data included in the extension itself, without any request.
 | overpass.kumi.systems | Kumi Systems (Austria) | Same, as a mirror when the first one is busy |
 | nominatim.openstreetmap.org | OpenStreetMap Foundation | Fallback when Overpass is busy |
 
-No other information is added to these requests: no name, account, course name,
+No other information is added to these requests: no name, account, course or route name,
 timestamps or other personal data. As with any web request, these services can see your
 IP address and browser information. The requests identify the extension as
 "ClimbNamer" with a link to this project. Their own privacy policies apply, for example
@@ -66,9 +73,9 @@ The extension stores, using your browser's extension storage:
 
 - No analytics, telemetry, advertising or tracking.
 - No selling, renting or sharing of data, and no use of data for any purpose other
-  than finding and naming climbs on Garmin Connect courses.
+  than finding and naming climbs on Garmin Connect courses and Strava routes.
 - No use of data to determine creditworthiness or for lending purposes.
-- No access to any website other than connect.garmin.com and the OpenStreetMap
+- No access to any website other than connect.garmin.com, www.strava.com and the OpenStreetMap
   services listed above.
 
 ## 5. Children
@@ -90,5 +97,5 @@ Questions or concerns: please open an issue at
 ---
 
 ClimbNamer is an independent project and is not affiliated with, endorsed by or
-sponsored by Garmin. Garmin and Garmin Connect are trademarks of Garmin Ltd. or its
-subsidiaries. Map data © OpenStreetMap contributors (ODbL).
+sponsored by Garmin or Strava. Garmin and Garmin Connect are trademarks of Garmin Ltd. or its
+subsidiaries; Strava is a trademark of Strava, Inc. Map data © OpenStreetMap contributors (ODbL).

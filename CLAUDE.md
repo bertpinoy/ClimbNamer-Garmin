@@ -1,4 +1,4 @@
-# Instructions for ClimbNamer for Garmin Connect (browser extension)
+# Instructions for ClimbNamer for Garmin Connect and Strava (browser extension)
 
 ## Code style
 

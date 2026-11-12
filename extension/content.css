@@ -1,4 +1,5 @@
-/* ClimbNamer panel: dark "night ride" style with orange accent (same as ClimbNamer for Hammerhead). */
+/* ClimbNamer panel (Garmin Connect and Strava): dark "night ride" style with orange accent,
+   same as ClimbNamer for Hammerhead. */
 #hhcn-panel {
   --hhcn-orange: #ff6b1a;
   --hhcn-orange-soft: rgba(255, 107, 26, 0.12);
@@ -25,6 +26,7 @@
   font: 13px/1.35 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   overflow: hidden;
 }
+#hhcn-panel[data-site="strava"] { right: 16px; }
 #hhcn-panel.hhcn-collapsed { width: auto; }
 #hhcn-panel button { font: inherit; }
 
@@ -102,7 +104,7 @@
 
 #hhcn-panel :focus-visible { outline: 2px solid var(--hhcn-orange); outline-offset: 2px; }
 
-/* Climb bands drawn on Garmin Connect's elevation chart */
+/* Climb bands drawn on the elevation chart (Garmin Connect and Strava) */
 .cn-band { fill: rgba(255, 107, 26, 0.16); transition: fill 0.15s; }
 .cn-band-hover { fill: rgba(255, 107, 26, 0.30); }
 .cn-band-active { fill: rgba(255, 107, 26, 0.42); stroke: #ff6b1a; stroke-width: 1.5; }
