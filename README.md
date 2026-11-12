@@ -2,8 +2,8 @@
 
 # ClimbNamer — for Garmin Connect
 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda)
-[![Users](https://img.shields.io/chrome-web-store/users/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)
+[![Users](https://img.shields.io/chrome-web-store/users/ejokejjhepoeeebomjahihncemjbmfda)](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)
 [![License](https://img.shields.io/github/license/bertpinoy/ClimbNamer-Garmin)](https://github.com/bertpinoy/ClimbNamer-Garmin/blob/main/LICENSE)
 
 A Chrome / Edge extension that **finds the climbs on your Garmin Connect courses and gives
@@ -11,7 +11,7 @@ them names**. Garmin Connect shows a course's elevation profile, but doesn't tel
 where the climbs are or what they're called. ClimbNamer does: *Kemmelberg*, *Rodeberg*,
 *Col du Galibier*…
 
-**[➜ Install ClimbNamer for Garmin Connect from the Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda)**
+**[➜ Install ClimbNamer for Garmin Connect from the Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda)**
 (works in Google Chrome and Microsoft Edge)
 
 > **Not affiliated with Garmin.** ClimbNamer is an independent project. It is not
@@ -95,10 +95,10 @@ See the [privacy policy](PRIVACY.md).
 
 ## Install
 
-**Chrome:** install from the [Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda) and click **Add to Chrome**.
+**Chrome:** install from the [Chrome Web Store](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda) and click **Add to Chrome**.
 Updates are installed automatically.
 
-**Edge:** open the same [Chrome Web Store page](https://chromewebstore.google.com/detail/climbnamer-for-garmin-conn/ejokejjhepoeeebomjahihncemjbmfda) in Edge, click
+**Edge:** open the same [Chrome Web Store page](https://chromewebstore.google.com/detail/climbnamer-for-garmin-con/ejokejjhepoeeebomjahihncemjbmfda) in Edge, click
 **Allow extensions from other stores** when Edge asks, then **Get** / **Add to Chrome**.
 
 **From source** (for development):
