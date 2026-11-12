@@ -22,7 +22,9 @@ Sister project: [ClimbNamer for Hammerhead Dashboard](https://github.com/bertpin
 The Strava support was developed in [Climbnamer-Strava](https://github.com/bertpinoy/Climbnamer-Strava)
 and is now part of this extension.
 
-![ClimbNamer on a course in Garmin Connect](store/screenshots/1-course-climbs-map-and-chart.png)
+| Garmin Connect | Strava |
+|---|---|
+| ![ClimbNamer on a course in Garmin Connect: climbs on the map and the elevation chart](store/screenshots/1-course-climbs-map-and-chart.png) | ![ClimbNamer on a route on Strava: climbs on the elevation chart](store/screenshots/3-strava-route-climbs-chart.png) |
 
 ## Features
 
